@@ -15,5 +15,8 @@ module.exports ={
       ]
     })
     return config
-  }
+  },
+  experimental: {
+    newNextLinkBehavior: false,
+  },
 }
