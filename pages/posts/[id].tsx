@@ -1,5 +1,6 @@
 import { getPost, getPostIds } from "lib/posts"
 import { NextPage } from "next"
+import React from "react"
 
 type Props = {
   post:Post

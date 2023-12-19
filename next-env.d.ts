@@ -6,6 +6,8 @@ declare module "*.png"{
   export default value
 }
 
+declare module "lib/*"
+
 type Post = {
   id: string;
   date: string;

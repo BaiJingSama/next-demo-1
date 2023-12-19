@@ -2,6 +2,7 @@ import { NextPage } from "next";
 // import { usePosts } from "hooks/usePosts";
 import { getPosts } from "lib/posts";
 import Link from 'next/link'
+import React from "react";
 
 type Props = {
   posts: Post[]
