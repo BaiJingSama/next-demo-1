@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CreatePost1703060534704 = void 0;
+exports.CreateComments1703216388234 = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -17,12 +17,12 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _typeorm = require("typeorm");
 
-var CreatePost1703060534704 = /*#__PURE__*/function () {
-  function CreatePost1703060534704() {
-    (0, _classCallCheck2["default"])(this, CreatePost1703060534704);
+var CreateComments1703216388234 = /*#__PURE__*/function () {
+  function CreateComments1703216388234() {
+    (0, _classCallCheck2["default"])(this, CreateComments1703216388234);
   }
 
-  (0, _createClass2["default"])(CreatePost1703060534704, [{
+  (0, _createClass2["default"])(CreateComments1703216388234, [{
     key: "up",
     value: function () {
       var _up = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(queryRunner) {
@@ -32,24 +32,22 @@ var CreatePost1703060534704 = /*#__PURE__*/function () {
               case 0:
                 _context.next = 2;
                 return queryRunner.createTable(new _typeorm.Table({
-                  name: 'posts',
+                  name: 'comments',
                   columns: [{
                     name: 'id',
-                    type: 'int',
-                    isPrimary: true,
-                    // 主键
                     isGenerated: true,
-                    // 自动创建
-                    generationStrategy: 'increment' // 自增策略
-
+                    type: 'int',
+                    generationStrategy: 'increment',
+                    isPrimary: true
                   }, {
-                    name: 'title',
-                    type: 'varchar' // 可变长度的字符串
-
+                    name: 'user_id',
+                    type: 'int'
+                  }, {
+                    name: 'post_id',
+                    type: 'int'
                   }, {
                     name: 'content',
-                    type: 'text' // 文本 可以无限长
-
+                    type: 'text'
                   }]
                 }));
 
@@ -79,7 +77,7 @@ var CreatePost1703060534704 = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return queryRunner.dropTable('posts');
+                return queryRunner.dropTable('comments');
 
               case 2:
                 return _context2.abrupt("return", _context2.sent);
@@ -99,7 +97,7 @@ var CreatePost1703060534704 = /*#__PURE__*/function () {
       return down;
     }()
   }]);
-  return CreatePost1703060534704;
+  return CreateComments1703216388234;
 }();
 
-exports.CreatePost1703060534704 = CreatePost1703060534704;
+exports.CreateComments1703216388234 = CreateComments1703216388234;
