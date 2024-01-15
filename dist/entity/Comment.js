@@ -33,7 +33,7 @@ var Comment = (_dec = (0, _typeorm.Entity)(), _dec2 = (0, _typeorm.PrimaryGenera
   return _Post.Post;
 }, function (post) {
   return post.comments;
-}), _dec6 = (0, _typeorm.CreateDateColumn)('time'), _dec7 = (0, _typeorm.UpdateDateColumn)('time'), _dec(_class = (_class2 = (_temp = function Comment() {
+}), _dec6 = (0, _typeorm.CreateDateColumn)(), _dec7 = (0, _typeorm.UpdateDateColumn)(), _dec(_class = (_class2 = (_temp = function Comment() {
   (0, _classCallCheck2["default"])(this, Comment);
   (0, _initializerDefineProperty2["default"])(this, "id", _descriptor, this);
   (0, _initializerDefineProperty2["default"])(this, "content", _descriptor2, this);
