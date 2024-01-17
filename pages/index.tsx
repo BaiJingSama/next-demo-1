@@ -1,8 +1,6 @@
 import { GetServerSideProps, NextPage } from "next"
 import React from "react"
-import { UAParser } from "ua-parser-js"
 import Link from "next/link"
-// import { createConnection, getConnection } from "typeorm"
 import { getDatabaseConnection } from "lib/getDataBaseConnection"
 import { Post } from "src/entity/Post"
 type Props = {
@@ -14,8 +12,14 @@ const index:NextPage<Props> = (props) => {
   
   return (
     <div>
-      123456
-      {posts.map(post => <div>{post.title}</div>)}
+      <h1>文章列表</h1>
+      {posts.map(post =>
+        <Link key={post.id} href={`/posts/${post.id}`}>
+          <a>
+            {post.title}
+          </a>
+        </Link> 
+      )}
     </div>
   )
 }
