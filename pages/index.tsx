@@ -14,6 +14,7 @@ const index:NextPage<Props> = (props) => {
   
   return (
     <div>
+      123456
       {posts.map(post => <div>{post.title}</div>)}
     </div>
   )
