@@ -10,7 +10,7 @@ type Props = {
 
 const PostsIndex: NextPage<Props> = (props) => {
   
-  console.log(props.posts);
+  // console.log(props.posts);
   
   const {posts} = props
   return (

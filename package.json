@@ -9,12 +9,13 @@
     "typeorm": "babel -w ./src --out-dir dist --extensions .ts,.tsx",
     "m:run": "typeorm migration:run",
     "m:revert": "typeorm migration:revert",
-    "m:create":"typeorm migration:create",
+    "m:create": "typeorm migration:create",
     "e:create": "typeorm entity:create"
   },
   "dependencies": {
     "@babel/cli": "7.10.1",
     "axios": "0.19.2",
+    "bcryptjs": "^2.4.3",
     "gray-matter": "4.0.2",
     "marked": "1.1.0",
     "next": "9.4.1",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.23.6",
     "@types/axios": "0.14.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/marked": "1",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
