@@ -19,14 +19,18 @@ const SignUp:NextPage = () =>{
   const onSubmit = useCallback((e) => {
     e.preventDefault(); //取消submit默认事件否则提交时页面会刷新
     console.log(formData);
-    axios.post(`/api/v1/users`,formData).then(()=>{},(err)=>{
-      if(err.response){
-        const response:AxiosResponse =  err.response
-        if(response.status === 422){
-          setErrors({...errors,...response.data})
+    axios.post(`/api/v1/users`,formData)
+      .then(()=>{
+        window.alert('注册成功')
+        // window.location.href = '/sign_in'
+      },(err)=>{
+        if(err.response){
+          const response:AxiosResponse =  err.response
+          if(response.status === 422){
+            setErrors(response.data)
+          }
         }
-      }
-    })
+      })
   },[formData])
   return (
     <>
