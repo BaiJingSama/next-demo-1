@@ -1,36 +1,22 @@
 import { getDatabaseConnection } from "lib/getDataBaseConnection";
 import { NextApiHandler } from "next";
-import { User } from "src/entity/User";
-import bcrypt from 'bcryptjs' // 密码加密库
+import {SignIn} from '../../../src/model/SignIn'
 
 const Sessions: NextApiHandler = async(req, res) => {
+  res.setHeader('Content-Type','application/json;charset=utf-8')
   // 从请求体中拿到用户名和密码
   const {username,password} = req.body;
-  // 建立数据库链接
-  const connection =  await getDatabaseConnection()
-  const user = await connection.manager.findOne(User,{where:{username}})
-  res.setHeader('Content-Type','application/json;charset=utf-8')
-  if(user){
-    // console.log(user);
-    // 判断数据库的密码和用户输入密码的加密hash是否一致
-    const isMatch = bcrypt.compareSync(password, user.passwordDigest);
-    if(isMatch){
-      res.statusCode = 200;
-      res.end(JSON.stringify(user))
-    }else{
-      res.statusCode = 422;
-    res.end(JSON.stringify({password:['密码不匹配']}))
-    }
-
-  }else{
+  const signIn = new SignIn()
+  signIn.username = username
+  signIn.password = password
+  await signIn.validate()
+  if(signIn.hasErrors()){
     res.statusCode = 422;
-    res.end(JSON.stringify({username:['用户名不存在']}))
-  }
-  // res.setHeader('Content-Type','application/json;charset=utf-8')
-  // res.statusCode = 200;
-  // res.write('');
-  // res.end()
-  
+    res.end(JSON.stringify(signIn.errors))
+  }else{
+    res.statusCode = 200
+    res.end(JSON.stringify(signIn.user))
+  }  
 }
 
 export default Sessions 

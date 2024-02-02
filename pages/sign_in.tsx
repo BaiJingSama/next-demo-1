@@ -22,7 +22,7 @@ const SignIn:NextPage = () =>{
     axios.post(`/api/v1/sessions`,formData)
       .then(()=>{
         window.alert('登录成功')
-        window.location.href = '/'
+        // window.location.href = '/'
       },(err)=>{
         if(err.response){
           const response:AxiosResponse =  err.response
