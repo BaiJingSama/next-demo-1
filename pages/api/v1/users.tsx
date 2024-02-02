@@ -1,7 +1,6 @@
 import { getDatabaseConnection } from "lib/getDataBaseConnection";
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "src/entity/User";
-import bcrypt from 'bcryptjs' // 密码加密库
 
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,10 +14,7 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
   user.username = username.trim()
   user.password = password
   user.passwordConfirmation = passwordConfirmation
-  // 生成salt值
-  // const salt = bcrypt.genSaltSync(10);
-  // 将密码和salt值一起散列化将结果的hash值保存为密码
-  // user.password = bcrypt.hashSync(password, salt);
+  
 
   await user.validate()
   if(user.hasErrors()){
@@ -30,10 +26,6 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     res.statusCode = 200
     res.write(JSON.stringify(user))
   }
-
- 
-  
-
   res.end()
 }
 

@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
 import { getDatabaseConnection } from "lib/getDataBaseConnection";
-
+import bcrypt from 'bcryptjs' // 密码加密库
+import _ from "lodash";
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('increment')
@@ -57,5 +58,18 @@ export class User {
   hasErrors(){
     // 判断是否有错误
     return !!Object.values(this.errors).find(v => v.length>0)
+  }
+  @BeforeInsert()
+  generatePasswordDigest(){
+    // 生成salt值
+    const salt = bcrypt.genSaltSync(10);
+    // 将密码和salt值一起散列化将结果的hash值保存为密码
+    this.passwordDigest = bcrypt.hashSync(this.password, salt);
+  }
+
+  // toJSON方法能让JSON.stringify()能将对象转换为方法返回的字符串
+  toJSON(){
+    // omit方法能从一个对象中忽略指定的属性，可以自己实现，也能直接用库，大部分的库都有 例如lodash
+    return _.omit(this,['password','passwordConfirmation','passwordDigest','errors'])
   }
 }
