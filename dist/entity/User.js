@@ -141,7 +141,8 @@ var User = (_dec = (0, _typeorm.Entity)('users'), _dec2 = (0, _typeorm.PrimaryGe
 
 
       this.passwordDigest = _bcryptjs["default"].hashSync(this.password, salt);
-    }
+    } // toJSON方法能让JSON.stringify()能将对象转换为方法返回的字符串
+
   }, {
     key: "toJSON",
     value: function toJSON() {
