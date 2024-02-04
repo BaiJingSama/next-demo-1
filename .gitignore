@@ -5,6 +5,7 @@
 /.pnp
 /blog-data/
 .pnp.js
+/.env.local
 
 # testing
 /coverage
