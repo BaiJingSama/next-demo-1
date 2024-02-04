@@ -68,45 +68,6 @@ const SignIn: NextPage<{ user: User }> = (props) => {
       <Form fields={fields} onSubmit={onSubmit} buttons={<>
         <button type="submit">登录</button>
       </>}></Form>
-      {/* <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            用户名
-            <input
-              type="text"
-              value={formData.username}
-              onChange={e => setFormData({
-                ...formData,
-                username: e.target.value
-              })}
-            />
-          </label>
-          {errors.username?.length > 0 &&
-            <div>
-              {errors.username.join(',')}
-            </div>}
-        </div>
-        <div>
-          <label>
-            密码
-            <input
-              type="password"
-              value={formData.password}
-              onChange={e => setFormData({
-                ...formData,
-                password: e.target.value
-              })}
-            />
-          </label>
-          {errors.password?.length > 0 &&
-            <div>
-              {errors.password.join(',')}
-            </div>}
-        </div>
-        <div>
-          <button type="submit">登录</button>
-        </div>
-      </form> */}
     </>
   )
 }

@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { Form } from "components/Form";
 import { NextPage } from "next";
 import { useCallback, useState } from "react";
 
@@ -13,6 +14,38 @@ const SignUp:NextPage = () =>{
     password: [],
     passwordConfirmation: []
   })
+  const fields = [
+    {
+      label: '用户名',
+      type: 'text' as 'text',
+      value: formData.username,
+      onChange: e => setFormData({
+        ...formData,
+        username: e.target.value
+      }),
+      errors: errors.username
+    },
+    {
+      label: '密码',
+      type: 'password' as 'password',
+      value: formData.password,
+      onChange: e => setFormData({
+        ...formData,
+        password: e.target.value
+      }),
+      errors: errors.password
+    },
+    {
+      label: '确认密码',
+      type: 'password' as 'password',
+      value: formData.passwordConfirmation,
+      onChange: e => setFormData({
+        ...formData,
+        passwordConfirmation: e.target.value
+      }),
+      errors: errors.passwordConfirmation
+    },
+  ]
   
   // useCallback的意思是只在第一次渲染时创建一个函数，后面空数组表示不管什么变这个useCallback都不变
   // 这里需要依赖formData这个数据，当数据变化，这个useCallback就要变化
@@ -35,62 +68,9 @@ const SignUp:NextPage = () =>{
   return (
     <>
     <h1>注册</h1>
-    <form onSubmit={onSubmit}>
-      <div>
-        <label>
-          用户名
-          <input 
-            type="text" 
-            value={formData.username} 
-            onChange={e => setFormData({
-              ...formData,
-              username: e.target.value
-            })}
-            />
-        </label>
-        {errors.username?.length > 0 && 
-        <div>
-          {errors.username.join(',')}
-        </div>}
-      </div>
-      <div>
-        <label>
-          密码
-          <input 
-            type="password"
-            value={formData.password} 
-            onChange={e => setFormData({
-              ...formData,
-              password: e.target.value
-            })}
-          />
-        </label>
-        {errors.password?.length > 0 && 
-        <div>
-          {errors.password.join(',')}
-        </div>}
-      </div>
-      <div>
-        <label>
-          确认密码
-          <input 
-            type="password"
-            value={formData.passwordConfirmation} 
-            onChange={e => setFormData({
-              ...formData,
-              passwordConfirmation: e.target.value
-            })}
-          />
-        </label>
-        {errors.passwordConfirmation?.length > 0 && 
-        <div>
-          {errors.passwordConfirmation.join(',')}
-        </div>}
-      </div>
-      <div>
+    <Form fields={fields} onSubmit={onSubmit} buttons={<>
         <button type="submit">注册</button>
-      </div>
-    </form>
+      </>}></Form>
     </>
   )
 }
