@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { Form } from "components/Form";
 import { withSession } from "lib/withSession";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useCallback, useState } from "react";
@@ -8,14 +9,35 @@ const SignIn: NextPage<{ user: User }> = (props) => {
   console.log(props.user)
   const [formData, setFormData] = useState({
     username: '',
-    password: '',
-    passwordConfirmation: ''
+    password: ''
   })
   const [errors, setErrors] = useState({
     username: [],
-    password: [],
-    passwordConfirmation: []
+    password: []
   })
+
+  const fields = [
+    {
+      label: '用户名',
+      type: 'text' as 'text',
+      value: formData.username,
+      onChange: e => setFormData({
+        ...formData,
+        username: e.target.value
+      }),
+      errors: errors.username
+    },
+    {
+      label: '密码',
+      type: 'password' as 'password',
+      value: formData.password,
+      onChange: e => setFormData({
+        ...formData,
+        password: e.target.value
+      }),
+      errors: errors.password
+    },
+  ]
 
   // useCallback的意思是只在第一次渲染时创建一个函数，后面空数组表示不管什么变这个useCallback都不变
   // 这里需要依赖formData这个数据，当数据变化，这个useCallback就要变化
@@ -43,7 +65,10 @@ const SignIn: NextPage<{ user: User }> = (props) => {
         </div>
       }
       <h1>登录</h1>
-      <form onSubmit={onSubmit}>
+      <Form fields={fields} onSubmit={onSubmit} buttons={<>
+        <button type="submit">登录</button>
+      </>}></Form>
+      {/* <form onSubmit={onSubmit}>
         <div>
           <label>
             用户名
@@ -81,7 +106,7 @@ const SignIn: NextPage<{ user: User }> = (props) => {
         <div>
           <button type="submit">登录</button>
         </div>
-      </form>
+      </form> */}
     </>
   )
 }
@@ -91,9 +116,9 @@ export default SignIn
 
 export const getServerSideProps: GetServerSideProps =
   withSession(
-    async (context:GetServerSidePropsContext) => {
+    async (context: GetServerSidePropsContext) => {
       //  @ts-ignore
-      let user = context.req.session.get('currentUser') ? JSON.parse(JSON.stringify(context.req.session.get('currentUser'))): null
+      let user = context.req.session.get('currentUser') ? JSON.parse(JSON.stringify(context.req.session.get('currentUser'))) : null
       return {
         props: {
           user
