@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { Form } from "components/Form";
 import { useForm } from "hooks/useForm";
 import { NextPage } from "next";
-import { useCallback, useState } from "react";
 
 type field = {
   label:string,
@@ -23,16 +21,8 @@ const PostsNew:NextPage = ()=>{
       })
   }
   const fields:field[] = [
-    {
-      label: '标题',
-      type: 'text',
-      key: 'title'
-    },
-    {
-      label: '内容',
-      type: 'textarea',
-      key: 'content'
-    }
+    {label: '标题',type: 'text',key: 'title'},
+    {label: '内容',type: 'textarea',key: 'content'}
   ]
   const initFormData = {title: '',content:''}
   const {form,setErrors} = useForm(
