@@ -45,3 +45,7 @@ yarn m:create -n <表名> // 添加表配置文件
 yarn m:run // 表的配置选项写进数据库
 yarn e:create // 创建实体文件
 ```
+
+## 问题
+
+1. 当你m:run出错，报错信息为无法找到getDatabaseConnection以及相关的内容时，就需要把entity中的文件里面的关于该项代码全部注释，因为该报错是因为该代码在实体里链接数据库导致的报错，当成功run了后再将代码恢复即可
