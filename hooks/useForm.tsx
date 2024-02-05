@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { ChangeEventHandler, useCallback, useState } from "react"
 
 type Filed<T> = {
@@ -5,8 +6,19 @@ type Filed<T> = {
   type: 'text' | 'password' | 'textarea',
   key: keyof T,
 }
-export function useForm<T>(initFormData:T,fields:Filed<T>[],buttons:React.ReactElement,onSubmit:(fd:T)=>void){
+
+type useFormOptions<T> = {
+  initFormData:T ;
+  fields:Filed<T>[];
+  buttons:React.ReactElement;
+  submit: {
+    request: (formData:T)=> Promise<AxiosResponse<T>>;
+    message: string
+  }
+}
+export function useForm<T>(options:useFormOptions<T>){
   // 非受控
+  const {initFormData,fields,buttons,submit} = options
   const [formData,setFormData] = useState(initFormData)
 
   const [errors,setErrors] = useState(()=>{
@@ -26,8 +38,15 @@ export function useForm<T>(initFormData:T,fields:Filed<T>[],buttons:React.ReactE
   },[formData])
   const _onSubmit = useCallback((e) =>{
     e.preventDefault()
-    onSubmit(formData)
-  },[onSubmit,formData])
+    submit.request(formData).then(()=>{
+      window.alert(submit.message)
+    },(e)=>{
+      if(e.response){
+        const response:AxiosResponse = e.response
+        setErrors(response.data)
+      }
+    })
+  },[submit,formData])
   const form = (
     <form onSubmit={_onSubmit}>
       {fields.map(field=>

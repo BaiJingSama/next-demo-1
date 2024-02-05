@@ -4,47 +4,19 @@ import { withSession } from "lib/withSession";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { User } from "src/entity/User";
 
-type field = {
-  label:string,
-  type: 'text' | 'password' | 'textarea',
-  key: 'username' | 'password'
-}
-
 const SignIn: NextPage<{ user: User }> = (props) => {
-  const initFormData = {
-    username: '',
-    password: ''
-  }
-
-  const fields:field[] = [
-    {
-      label: '用户名',
-      type: 'text' as 'text',
-      key: 'username',
-    },
-    {
-      label: '密码',
-      type: 'password' as 'password',
-      key: 'password',
-    },
-  ]
-
-    const onSubmit = (formData: typeof initFormData) => {
-    axios.post(`/api/v1/sessions`, formData)
-      .then(() => {
-        window.alert('登录成功')
-        // window.location.href = '/'
-      }, (err) => {
-        if (err.response) {
-          const response: AxiosResponse = err.response
-          if (response.status === 422) {
-            setErrors(response.data)
-          }
-        }
-      })
-  }
-
-  const {form,setErrors} = useForm(initFormData,fields,<button type="submit">登录</button>,onSubmit)
+  const {form} = useForm({
+    initFormData:{username: '',password: ''},
+    fields: [
+      {label: '用户名',type: 'text' as 'text',key: 'username'},
+      {label: '密码',type: 'password' as 'password',key: 'password'}
+    ],
+    buttons: <button type="submit">登录</button>,
+    submit:{
+      request: formData => axios.post(`/api/v1/sessions`, formData),
+      message: '登录成功'
+    }
+  })
 
   return (
     <>
