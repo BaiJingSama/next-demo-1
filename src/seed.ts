@@ -24,5 +24,5 @@ createConnection().then(async connection => {
     c1.post = p1
     c1.content = '这是一篇评论'
     await manager.save(c1)
-    connection.close()
+    await connection.close()
 }).catch(error => console.log(error));
