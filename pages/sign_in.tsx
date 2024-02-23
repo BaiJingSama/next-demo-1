@@ -3,7 +3,7 @@ import { useForm } from "hooks/useForm";
 import { withSession } from "lib/withSession";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { User } from "src/entity/User";
-import qs from 'query-string'
+import qs from 'querystring'
 
 const SignIn: NextPage<{ user: User }> = (props) => {
   const {form} = useForm({
@@ -17,7 +17,8 @@ const SignIn: NextPage<{ user: User }> = (props) => {
       request: formData => axios.post(`/api/v1/sessions`, formData),
       success: () => {
         window.alert('登录成功')
-        const query = qs.parse(window.location.search)
+        const query = qs.parse(window.location.search.substring(1))
+        console.log(query);
         window.location.href = query.return_to.toString() || '/'
       }
     }

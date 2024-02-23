@@ -3,16 +3,22 @@ import React from "react"
 import Link from "next/link"
 import { getDatabaseConnection } from "lib/getDataBaseConnection"
 import { Post } from "src/entity/Post"
+import { UAParser } from "ua-parser-js"
+import qs from 'querystring'
+
+
 type Props = {
-  posts: Post[]
+  posts: Post[],
+  count: number,
+  perPage: number,
+  page: number
 }
 const PostsIndex:NextPage<Props> = (props) => {
   const {posts} = props
-  console.log(posts);
   
   return (
     <div>
-      <h1>文章列表</h1>
+      <h1>文章列表({props.count}) 每页{props.perPage}</h1>
       {posts.map(post =>
       <div>
         <Link key={post.id} href={`/posts/${post.id}`}>
@@ -22,6 +28,12 @@ const PostsIndex:NextPage<Props> = (props) => {
         </Link>
       </div> 
       )}
+      <footer>
+        共{props.count}篇文章，当前第{props.page}页
+        <Link href={`?page=${props.page - 1}`}><a>上一页</a></Link> 
+        |
+        <Link href={`?page=${props.page + 1}`}><a>下一页</a></Link>
+      </footer>
     </div>
   )
 }
@@ -29,13 +41,30 @@ const PostsIndex:NextPage<Props> = (props) => {
 export default PostsIndex
 
 export const getServerSideProps:GetServerSideProps = async (context)=>{
-  const connection =  await getDatabaseConnection()
+  // 拿到查询参数的分页数据
+  const index = context.req.url.indexOf('?')
+  const search = context.req.url.substr(index + 1)
+  const query = qs.parse(search)
+  const page = parseInt(query.page.toString()) || 1
 
-  const posts = await connection.manager.find(Post)
+  const connection =  await getDatabaseConnection()
+  const perPage = 3
+  const [posts,count] = await connection.manager.findAndCount(Post, 
+    {skip: (page - 1) * perPage,take: perPage}
+  )
+  const ua = context.req.headers['user-agent']
+  
+  
+
+  const result = new UAParser(ua).getResult()
 
   return{
     props:{
-      posts: JSON.parse(JSON.stringify(posts))
+      browser: result.browser,
+      posts: JSON.parse(JSON.stringify(posts)),
+      count, // 文章总数
+      perPage, // 每页多少个
+      page // 当前第几页
     }
   }
 }
