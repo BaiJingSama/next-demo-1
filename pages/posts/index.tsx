@@ -1,44 +1,41 @@
-import { NextPage } from "next";
-// import { usePosts } from "hooks/usePosts";
-import { getPosts } from "lib/posts";
-import Link from 'next/link'
-import React from "react";
-
+import { GetServerSideProps, NextPage } from "next"
+import React from "react"
+import Link from "next/link"
+import { getDatabaseConnection } from "lib/getDataBaseConnection"
+import { Post } from "src/entity/Post"
 type Props = {
   posts: Post[]
 }
-
-const PostsIndex: NextPage<Props> = (props) => {
-  
-  // console.log(props.posts);
-  
+const PostsIndex:NextPage<Props> = (props) => {
   const {posts} = props
+  console.log(posts);
+  
   return (
     <div>
       <h1>文章列表</h1>
-      {
-        posts.map(p=>
-          <div key={p.id}>
-            <Link href="/posts/[id]" as={`/posts/${p.id}`}>
-              <a>
-                {p.title}
-              </a>
-            </Link>
-            <p>{p.date}</p>
-          </div>
-        )
-      }
+      {posts.map(post =>
+      <div>
+        <Link key={post.id} href={`/posts/${post.id}`}>
+          <a>
+            {post.title}
+          </a>
+        </Link>
+      </div> 
+      )}
     </div>
   )
 }
 
 export default PostsIndex
 
-export const getStaticProps = async () => {
- const posts = await getPosts()
-  return {
+export const getServerSideProps:GetServerSideProps = async (context)=>{
+  const connection =  await getDatabaseConnection()
+
+  const posts = await connection.manager.find(Post)
+
+  return{
     props:{
-      posts: posts
+      posts: JSON.parse(JSON.stringify(posts))
     }
   }
 }
