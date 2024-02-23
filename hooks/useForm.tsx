@@ -13,7 +13,7 @@ type useFormOptions<T> = {
   buttons:React.ReactElement;
   submit: {
     request: (formData:T)=> Promise<AxiosResponse<T>>;
-    message: string
+    success:() => void
   }
 }
 export function useForm<T>(options:useFormOptions<T>){
@@ -38,12 +38,15 @@ export function useForm<T>(options:useFormOptions<T>){
   },[formData])
   const _onSubmit = useCallback((e) =>{
     e.preventDefault()
-    submit.request(formData).then(()=>{
-      window.alert(submit.message)
-    },(e)=>{
+    submit.request(formData).then(submit.success,(e)=>{
       if(e.response){
         const response:AxiosResponse = e.response
-        setErrors(response.data)
+        if(response.status === 422){
+          setErrors(response.data)
+        }else if(response.status === 401){
+          window.alert('用户未登录，请先登录')
+          window.location.href = `/sign_in?return_to=${encodeURIComponent(window.location.pathname)}` //防止有查询参数混淆
+        }
       }
     })
   },[submit,formData])
