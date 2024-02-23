@@ -11,7 +11,8 @@ type Props = {
   posts: Post[],
   count: number,
   perPage: number,
-  page: number
+  page: number,
+  totalPage: number
 }
 const PostsIndex:NextPage<Props> = (props) => {
   const {posts} = props
@@ -29,10 +30,11 @@ const PostsIndex:NextPage<Props> = (props) => {
       </div> 
       )}
       <footer>
-        共{props.count}篇文章，当前第{props.page}页
-        <Link href={`?page=${props.page - 1}`}><a>上一页</a></Link> 
+        共{props.count}篇文章，当前第{props.page}/{props.totalPage}页
+        {props.page !== 1 && <Link href={`?page=${props.page - 1}`}><a>上一页</a></Link> }
         |
-        <Link href={`?page=${props.page + 1}`}><a>下一页</a></Link>
+        {props.page < props.totalPage && <Link href={`?page=${props.page + 1}`}><a>下一页</a></Link>}
+        
       </footer>
     </div>
   )
@@ -64,7 +66,8 @@ export const getServerSideProps:GetServerSideProps = async (context)=>{
       posts: JSON.parse(JSON.stringify(posts)),
       count, // 文章总数
       perPage, // 每页多少个
-      page // 当前第几页
+      page, // 当前第几页
+      totalPage: Math.ceil(count / perPage)
     }
   }
 }
