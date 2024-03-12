@@ -17,6 +17,7 @@ type Props = {
 }
 const PostsIndex:NextPage<Props> = (props) => {
   const {posts,count,page,totalPage} = props
+  // const urlMaker = (n:number) => `?page=${n}`
   const {pager} = usePager({count,page,totalPage})
   return (
     <div>

@@ -33,6 +33,7 @@ export const usePager = (options:Options) =>{
       {pageNumbers.map(n => n === -1 ? <span key={n}>...</span> : <Link key={n} href={_urlMaker(n)}><a>{n}</a></Link>)}
       {page < totalPage && <Link href={_urlMaker(page + 1)}><a>下一页</a></Link>}
       <span>共{count}篇文章，第{page}/{totalPage}页</span>
+      
       <style jsx>{`
         .wrapper{
           margin: 0 -8px;
